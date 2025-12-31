@@ -1,4 +1,11 @@
 terraform {
+  cloud {
+
+    organization = "jeremieonk"
+    workspaces {
+      name = "azure_autos"
+    }
+  }
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -171,7 +178,7 @@ resource "azurerm_linux_virtual_machine" "public" {
   name                = "${var.name}-vm-public"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
-  size                = "Standard_B1s" # Similar to t2.micro
+  size                = "Standard_B1s"
   admin_username      = "jeremy"
 
   network_interface_ids = [
@@ -180,7 +187,7 @@ resource "azurerm_linux_virtual_machine" "public" {
 
   admin_ssh_key {
     username   = "jeremy"
-     public_key = var.ssh_public_key
+    public_key = var.ssh_public_key
   }
   custom_data = base64encode(<<-EOF
   #!/bin/bash
@@ -225,7 +232,7 @@ resource "azurerm_linux_virtual_machine" "private" {
 
   admin_ssh_key {
     username   = "jeremy"
-     public_key = var.ssh_public_key
+    public_key = var.ssh_public_key
   }
 
   os_disk {
